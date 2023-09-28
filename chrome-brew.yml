@@ -4,3 +4,7 @@
     - name: Install Google Chrome
       homebrew_cask:
         name: google-chrome
+
+    - name: Install Microsoft 365 Apps
+      homebrew_cask:
+        name: microsoft-office
