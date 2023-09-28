@@ -1,19 +1,18 @@
 ---
-- name: Install Google Chrome on macOS
-  hosts: macos
-  gather_facts: yes
-  become: yes
-  tasks:
-    - name: Download Google Chrome DMG
-      command: >
-        curl -L -o /tmp/googlechrome.dmg https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
-      args:
-        creates: /tmp/googlechrome.dmg
-      when: ansible_os_family == "Darwin"
 
-    - name: Install Google Chrome
-      command: >
-        hdiutil attach /tmp/googlechrome.dmg && cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/ && hdiutil detach /Volumes/Google\ Chrome
-      args:
-        creates: /Applications/Google Chrome.app
-      when: ansible_os_family == "Darwin"
+- name: Chrome - install
+  become: true
+  mac_pkg:
+    pkg_type: app
+    url: https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
+    archive_type: dmg
+    archive_path: "Google Chrome.app"
+
+- name: Chrome - get default browser
+  shell: defaultbrowser | sed 's/Current:\ //' | head -1
+  register: defaultbrowser_value
+  changed_when: False
+
+- name: Chrome - set as default browser
+  command: defaultbrowser -set chrome
+  when: defaultbrowser_value.stdout != "chrome"
