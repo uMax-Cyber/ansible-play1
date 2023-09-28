@@ -1,0 +1,10 @@
+---
+- name: Install Xcode Command Line Tools on macOS
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Install Xcode Command Line Tools
+      command: xcode-select --install
+      ignore_errors: yes  # Ignore errors if the tools are already installed
+      when: ansible_os_family == "Darwin"
