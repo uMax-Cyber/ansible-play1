@@ -1,0 +1,12 @@
+---
+- name: Install Homebrew on macOS
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Download Homebrew Installation Script
+      command: >
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        creates: /usr/local/bin/brew
+      when: ansible_os_family == "Darwin"
