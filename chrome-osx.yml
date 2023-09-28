@@ -5,10 +5,20 @@
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
+  pre_tasks:
+    - name: Check if the host is macOS
+      fail:
+        msg: "This playbook is intended to run only on macOS hosts."
+      when: ansible_os_family != "Darwin"
+      tags: skip_playbook
   tasks:
+    - name: Create Downloads folder if it doesn't exist
+      file:
+        path: ~/Downloads
+        state: directory
+
     - name: Download Chrome.pkg
       command: >
         curl -L -o ~/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
       args:
         creates: ~/Downloads/Chrome.pkg
-      when: ansible_os_family == "Darwin"
