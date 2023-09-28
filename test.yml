@@ -1,0 +1,18 @@
+---
+- name: Download Chrome.pkg to Downloads folder
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Create Downloads folder if it doesn't exist
+      file:
+        path: ~/Downloads
+        state: directory
+      when: ansible_os_family == "Darwin"
+
+    - name: Download Chrome.pkg
+      command: >
+        curl -L -o ~/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/stable/CHROME_VERSION/chrome/mac/GoogleChrome-CHROME_VERSION.dmg
+      args:
+        creates: ~/Downloads/Chrome.pkg
+      when: ansible_os_family == "Darwin"
