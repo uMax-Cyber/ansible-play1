@@ -1,18 +1,20 @@
 ---
+- name: Download Chrome.pkg to Downloads folder
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Create Downloads folder if it doesn't exist
+      file:
+        path: ~/Downloads
+        state: directory
+      when: ansible_os_family == "Darwin"
 
-- name: Chrome - install
-  become: true
-  mac_pkg:
-    pkg_type: app
-    url: https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
-    archive_type: dmg
-    archive_path: "Google Chrome.app"
-
-- name: Chrome - get default browser
-  shell: defaultbrowser | sed 's/Current:\ //' | head -1
-  register: defaultbrowser_value
-  changed_when: False
-
-- name: Chrome - set as default browser
-  command: defaultbrowser -set chrome
-  when: defaultbrowser_value.stdout != "chrome"
+    - name: Download Chrome.pkg
+      command: >
+        curl -L -o ~/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/stable/CHROME_VERSION/chrome/mac/GoogleChrome-CHROME_VERSION.dmg
+      args:
+        creates: ~/Downloads/Chrome.pkg
+      when: ansible_os_family == "Darwin"
