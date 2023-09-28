@@ -5,7 +5,6 @@
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
-    tasks:
     - name: Create Downloads folder if it doesn't exist
       file:
         path: ~/Downloads/m
