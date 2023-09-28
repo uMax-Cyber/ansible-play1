@@ -3,7 +3,6 @@
   hosts: macos
   gather_facts: yes
   become: yes
-
     tasks:
     - name: Download Chrome.pkg
       command: >
