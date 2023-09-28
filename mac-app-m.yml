@@ -1,0 +1,33 @@
+---
+- name: Install Chrome and Microsoft 365 Apps on macOS
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Download Google Chrome DMG
+      command: >
+        curl -L -o /tmp/googlechrome.dmg https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
+      args:
+        creates: /tmp/googlechrome.dmg
+      when: ansible_os_family == "Darwin"
+
+    - name: Install Google Chrome
+      command: >
+        hdiutil attach /tmp/googlechrome.dmg && cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/ && hdiutil detach /Volumes/Google\ Chrome
+      args:
+        creates: /Applications/Google Chrome.app
+      when: ansible_os_family == "Darwin"
+
+    - name: Download Microsoft 365 Apps Installer
+      command: >
+        curl -L -o /tmp/microsoft_office.pkg 'https://officecdnmac.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/Microsoft_365_and_Office_16.77.23091003_BusinessPro_Installer.pkg'
+      args:
+        creates: /tmp/microsoft_office.pkg
+      when: ansible_os_family == "Darwin"
+
+    - name: Install Microsoft 365 Apps
+      command: >
+        installer -pkg /tmp/microsoft_office.pkg -target /
+      args:
+        creates: /Applications/Microsoft Word.app
+      when: ansible_os_family == "Darwin"
