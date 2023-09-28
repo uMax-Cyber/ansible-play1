@@ -3,6 +3,8 @@
   hosts: macos
   gather_facts: yes
   become: yes
+  environment:
+    PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
   tasks:
     - name: Install Homebrew
       command: >
