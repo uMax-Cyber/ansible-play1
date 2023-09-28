@@ -3,8 +3,7 @@
   hosts: macos
   gather_facts: yes
   become: yes
-  vars:
-    ansible_python_interpreter: /usr/local/bin/python3
+
     tasks:
     - name: Download Chrome.pkg
       command: >
