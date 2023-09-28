@@ -3,7 +3,7 @@
   hosts: macos
   gather_facts: yes
   become: yes
-    tasks:
+  tasks:
     - name: Download Chrome.pkg
       command: >
         curl -L -o /Users/admin/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
