@@ -1,0 +1,24 @@
+---
+- name: Install Chrome and Microsoft 365 Apps on macOS
+  hosts: macos
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Install Homebrew
+      command: >
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        creates: /usr/local/bin/brew
+      when: ansible_os_family == "Darwin"
+
+    - name: Install Google Chrome
+      homebrew:
+        name: google-chrome
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    - name: Install Microsoft 365 Apps (including Teams)
+      homebrew_cask:
+        name: microsoft-office
+        state: present
+      when: ansible_os_family == "Darwin"
