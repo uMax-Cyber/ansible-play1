@@ -14,7 +14,7 @@
 
     - name: Download Chrome.pkg
       command: >
-        curl -L -o ~/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/stable/CHROME_VERSION/chrome/mac/GoogleChrome-CHROME_VERSION.dmg
+        curl -L -o ~/Downloads/Chrome.pkg https://dl.google.com/chrome/mac/universal/stable/CHFA/googlechrome.dmg
       args:
         creates: ~/Downloads/Chrome.pkg
       when: ansible_os_family == "Darwin"
